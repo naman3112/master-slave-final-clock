@@ -75,6 +75,9 @@ int lastState = HIGH; // the previous state from the input pin
 int lastMin = HIGH;
 int lastSec = HIGH;
 
+
+bool isConnected = false;
+
 int currentState; // the current reading from the input
 int currentMin;
 int currentSec;
@@ -138,6 +141,56 @@ void getTime(char *psz, bool f = true)
     Serial.println(h);
     Serial.println(m);
     Serial.println(s);
+}
+
+void reDisplayAllDisplays(){
+     P.begin(3);
+    P1.begin(3);
+    P2.begin(3);
+    P3.begin(3);
+
+    
+    
+    P.setInvert(false);
+    P1.setInvert(false);
+    P2.setInvert(false);
+    P3.setInvert(false);
+
+
+
+    P.setZone(0, 0, 0);
+    P.setZone(1, 1, 3);
+    P.setFont(0, numeric7Seg);
+    P.setFont(1, numeric7Se);
+    P.displayZoneText(0, szsecond, PA_LEFT, SPEED_TIME, 0, PA_PRINT, PA_NO_EFFECT);
+    P.displayZoneText(1, szTime, PA_LEFT, SPEED_TIME, PAUSE_TIME, PA_PRINT, PA_NO_EFFECT);
+
+    // pathi display
+    P1.setZone(0, 0, 0);
+    P1.setZone(1, 1, 3);
+    P1.setFont(0, numeric7Seg);
+    P1.setFont(1, numeric7Se);
+    P1.displayZoneText(0, szsecond, PA_LEFT, SPEED_TIME, 0, PA_PRINT, PA_NO_EFFECT);
+    P1.displayZoneText(1, szTime, PA_LEFT, SPEED_TIME, PAUSE_TIME, PA_PRINT, PA_NO_EFFECT);
+
+    
+    //new display - 1
+    P2.setZone(0, 0, 0);
+    P2.setZone(1, 1, 3);
+    P2.setFont(0, numeric7Seg);
+    P2.setFont(1, numeric7Se);
+    P2.displayZoneText(0, szsecond, PA_LEFT, SPEED_TIME, 0, PA_PRINT, PA_NO_EFFECT);
+    P2.displayZoneText(1, szTime, PA_LEFT, SPEED_TIME, PAUSE_TIME, PA_PRINT, PA_NO_EFFECT);
+
+    //new display - 2
+    P3.setZone(0, 0, 0);
+    P3.setZone(1, 1, 3);
+    P3.setFont(0, numeric7Seg);
+    P3.setFont(1, numeric7Se);
+    P3.displayZoneText(0, szsecond, PA_LEFT, SPEED_TIME, 0, PA_PRINT, PA_NO_EFFECT);
+    P3.displayZoneText(1, szTime, PA_LEFT, SPEED_TIME, PAUSE_TIME, PA_PRINT, PA_NO_EFFECT);
+
+ 
 }
 
 void setup(void)
@@ -214,6 +267,7 @@ void setup(void)
          RTC.setHourMode(h_mode);
         RTC.setTime(01, 01, 12);
     }
+
 }
 int i = 0;
 
@@ -348,7 +402,8 @@ void loop(void)
     if (millis() - lastTime >= 100 || i == 0)
 
     {
-      
+  
+
         lastTime = millis();
         // lastTimeMin=millis();
         getsec(szsecond);
@@ -383,7 +438,7 @@ void loop(void)
     if (millis() - lastTimeSend >= 3000 || i == 0)
 
     {
-      
+
         lastTimeSend = millis();
         // lastTimeMin=millis();
        
@@ -396,7 +451,7 @@ int sendData = ConvertIntoSeconds(h, m, s);
       Serial.println(sendData);
 
         Sender.print(sendData);                                // Send it to Sender serial port
-      
+      reDisplayAllDisplays();
     }
 
     
