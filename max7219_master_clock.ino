@@ -63,7 +63,7 @@ static DS1307 RTC;
 
 // Sending/Receiving example
 
-HardwareSerial Sender(2);   // Define a Serial port instance called 'Sender' using serial port 1 UART2
+//HardwareSerial Sender(2);   // Define a Serial port instance called 'Sender' using serial port 1 UART2
 
 
 
@@ -196,7 +196,7 @@ void reDisplayAllDisplays(){
 void setup(void)
 {
     Serial.begin(115200);
-    Sender.begin(115200, SERIAL_8N1, Sender_Txd_pin, Sender_Rxd_pin); // Define and start Sender serial port used for sending clock data 
+    //Sender.begin(115200, SERIAL_8N1, Sender_Txd_pin, Sender_Rxd_pin); // Define and start Sender serial port used for sending clock data 
 
     
     delay(10);
@@ -259,6 +259,10 @@ void setup(void)
     pinMode(BUTTON_MIN, INPUT_PULLUP);
     
     pinMode(BUTTON_SEC, INPUT_PULLUP);
+
+  //pinMode(Sender_Txd_pin, INPUT_PULLUP);
+ // pinMode(Sender_Rxd_pin, INPUT_PULLUP);
+
     getTime(szTime);
     // RTC.setHourMode(h_mode);x
 
@@ -291,9 +295,35 @@ void loop(void)
     static uint8_t display = 0;  // current display mode
     static bool flasher = false; // seconds passing flasher
 
+
+    
+              if (digitalRead(BUTTON_SEC) == HIGH) {
+                Serial.println("hey i am being the hight bioy");
+                   //    P.displayClear();
+                  P1.displayClear();
+                  // digitalWrite(LED_1, LOW); // turn the LED on
+                   }
+              else {
+                Serial.println("hey i am ihte lo w");
+            //  P.displayAnimate();
+                   P1.displayAnimate();
+              //     digitalWrite(LED_1, HIGH); // turn the LED on
+                    }
+                if (digitalRead(BUTTON_MIN) == HIGH) {
+                Serial.println("hey i am being the hight bioy");
+                       P.displayClear();
+               //      digitalWrite(LED_2, LOW); // turn the LED on
+                   }
+              else {
+                Serial.println("hey i am ihte lo w");
+                     P.displayAnimate();
+                   //   digitalWrite(LED_2, HIGH); // turn the LED on
+
+                    }
+
     // if(RTC.getHours()>12){
     //   h=1;
-    //   m= RTC.getMinutes();
+    //   m= RTC.getMinutes(); 
     //   s=RTC.getSeconds();
     //
     //   RTC.setTime(h,m,s);
@@ -390,8 +420,8 @@ void loop(void)
     lastMin = currentMin;
     lastSec = currentSec;
 
-    P.displayAnimate();
-    P1.displayAnimate();
+ //   P.displayAnimate();
+   // P1.displayAnimate();
     
     P2.displayAnimate();
     P3.displayAnimate();
@@ -402,6 +432,41 @@ void loop(void)
     if (millis() - lastTime >= 100 || i == 0)
 
     {
+
+   if (digitalRead(BUTTON_SEC) == HIGH) {
+                Serial.println("hey i am being the hight bioy");
+                       //P.displayClear();
+                      P1.displayClear();
+                           //  digitalWrite(LED_1, LOW); // turn the LED on
+      
+                   }
+              else {
+                Serial.println("hey i am ihte lo w");
+                // P.displayReset(0);
+               P1.displayReset(0);
+               // P.displayReset(1);
+              P1.displayReset(1);
+                    
+                    //digitalWrite(LED_1, HIGH); // turn the LED on
+
+
+                    }
+
+                      if (digitalRead(BUTTON_MIN) == HIGH) {
+                Serial.println("hey i am being the hight bioy");
+                       P.displayClear(); 
+                      // digitalWrite(LED_2, LOW); // turn the LED on                      
+                   }
+              else {
+                Serial.println("hey i am ihte lo w");
+                P.displayReset(0);
+
+                P.displayReset(1);
+              //  digitalWrite(LED_2, HIGH); // turn the LED on
+
+
+                    }
+      
   
 
         lastTime = millis();
@@ -444,14 +509,14 @@ void loop(void)
        
 
 
-int sendData = ConvertIntoSeconds(h, m, s);
+  //int sendData = ConvertIntoSeconds(h, m, s);
       
       // will use long recievedata = atoi(string) then will convert from milli seconds to hours minutes and second
-      Serial.println("sendData");
-      Serial.println(sendData);
+      //Serial.println("sendData");
+     // Serial.println(sendData);
 
-        Sender.print(sendData);                                // Send it to Sender serial port
-      reDisplayAllDisplays();
+    //    Sender.print(sendData);                                // Send it to Sender serial port
+     // reDisplayAllDisplays();
     }
 
     
